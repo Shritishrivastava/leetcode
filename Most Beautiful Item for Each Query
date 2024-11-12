@@ -1,0 +1,42 @@
+class Solution {
+public:
+
+    int BS(vector<vector<int>>& items, int queryprice){
+        int low = 0;
+        int high = items.size()-1;
+
+        int maxibeauty = 0;
+        while(high>=low){
+            int mid = (low+high)/2;
+            if(items[mid][0]>queryprice){
+                high = mid-1;
+            }else{
+                maxibeauty = max(maxibeauty,items[mid][1]);
+                low = mid+1;
+            }
+        }
+        return maxibeauty;
+
+    }
+    vector<int> maximumBeauty(vector<vector<int>>& items, vector<int>& queries) {
+        
+        int n = items.size();
+        int m = queries.size();
+
+        vector<int>result(m);
+
+        sort(begin(items), end(items));
+        
+        int maxbeauty = items[0][1];
+        for(int i=0;i<n;i++){
+            maxbeauty = max(maxbeauty, items[i][1]);
+            items[i][1] = maxbeauty;
+        }
+
+        for(int i=0;i<m;i++){
+            int queryprice = queries[i];
+            result[i] = BS(items, queryprice);
+        }
+        return result;
+        }
+    };
